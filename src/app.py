@@ -38,12 +38,76 @@ def sitemap():
 
 @app.route('/user', methods=['GET'])
 def handle_hello():
+    all_users=User.query.all()
+    new_users=[]
+    for i in range(len(all_users)):
+        print(all_users[i].serialize())
+        new_users.append(all_users[i].serialize())
 
     response_body = {
         "msg": "Hello, this is your GET /user response "
     }
+    return jsonify(new_users), 200
 
-    return jsonify(response_body), 200
+@app.route('/user/favoritos', methods=['GET'])
+def user_fav():
+     return jsonify({
+         "lista de usuarios favoritos":"ahahahhaha"
+          })
+
+
+@app.route("/people", methods=["GET"])
+def get_all_people():
+        return jsonify({
+         "menasaje":"Lista de los personajes"
+          })
+
+
+@app.route("/people/<int:id>", methods=["GET"])
+def get_one_people(id):
+        return jsonify({
+         "menasaje":"El personaje selecciondo es:  "+str(id)
+          })
+
+
+
+@app.route("/planets", methods=["GET"])
+def get_all_planets():
+        return jsonify({
+         "menasaje":"Lista de Planetas"
+          })
+
+@app.route("/planets/<int:planet_id>", methods=["GET"])
+def get_one_planets(planet_id):
+        return jsonify({
+         "menasaje":"aca esta el planeta seleccionado:  "+ str(planet_id)
+          })
+
+
+
+@app.route("/favorite/planet/<int:planet_id>", methods=['POST',"DELETE"])
+def modify_fav_planet(planet_id):
+    if request.method=="POST":
+        return jsonify({
+        "mensaje": "El planeta con id "+ str(planet_id) + " ha sido agregado"
+    })
+    else:
+         return jsonify({
+        "mensaje": "El planeta con id "+ str(planet_id) + " ha sido eliminado"
+    })
+
+@app.route("/favorite/person/<int:person_id>", methods=['POST',"DELETE"])
+def modify_fav_person(person_id):
+    if request.method=="POST":
+        return jsonify({
+        "mensaje": "El personaje con id "+ str(person_id) + " ha sido agregado"
+      })
+    else:
+         return jsonify({
+        "mensaje": "El personaje con id "+ str(person_id) + " ha sido eliminado"
+    })
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
